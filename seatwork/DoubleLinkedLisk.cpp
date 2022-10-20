@@ -27,11 +27,11 @@ void menu()
     printf("\t\t\t欢迎进入顺序表操作界面！\n");
     printf("\t 从键盘输入数字，完成对应的操作（1到3为有效操作，输入其他退出程序）\n  ");
     printf("\t 1.创建双链表(头插法)\n");
-    printf("\t 2.创建双链表(头插法)\n");
+    printf("\t 2.创建双链表(尾插法)\n");
     printf("\t 3.插入节点\n");
     printf("\t 4.删除节点\n");
-    printf("\t 6.打印反转双链表\n");
-    printf("\t 7.打印双链表\n");
+    printf("\t 5.打印反转双链表\n");
+    printf("\t 6.打印双链表\n");
     printStart();
 }
 
@@ -93,7 +93,7 @@ DuLNode *CreateDuL2()
     return head;   
 }
 
-// 插入节点
+// 从中间插入节点
 DuLNode *Insert()
 {
     DuLNode *p, *r;
@@ -140,29 +140,28 @@ DuLNode *Delete()
     printf("请输入你想要删除哪一个位置上的节点：");
     fflush(stdin);
     scanf("%d", &temp);
-    while ( r -> next && i < temp-1 )
-    {
-        i++;
-        r -> next = r;
+    // 确定要删除的节点的前一个位置
+    // while ( r -> next && i < temp-1 )
+    // {
+    //     i++;
+    //     r = r -> next;
+    // }
+
+    // 判断要删除的节点是否存在
+    for (int i = 0; r -> next; i++)
+    {   
+        r = r -> next;
+        if ( i < temp -1 )
+        {
+            printf("删除失败！\n");
+            return head;
+        }       
     }
-    printf("现在在第%d个节点\n", i);
-    // printf("此时现在节点的值是%d", r -> data);
     p = r -> next;
     p -> data = r -> next -> data;
     p -> prior -> next = p -> next;
     p -> next -> prior = p -> prior;
     free(p);
-    // printf("现在是在第%d个节点\n", i);
-    // if ( i >= temp )
-    // {
-    //     r -> prior -> next = r -> next;
-    //     r -> next -> prior = r -> prior;
-    //     delete r; 
-    // }
-    // else if ( i < temp )
-    // {
-    //     printf("删除失败！");
-    // }
     return head;
 }
 
@@ -181,19 +180,21 @@ void OutPutList()
     printf("\n");  
 }
 
-// 反转双链表
+// 反转双链表（类似头插法）
 void OutPutListReverse()
 {
-    DuLNode *p;
-    p = head;
-    printf("打印双链表\n");
-    while (p -> prior != NULL)
+    DuLNode *p, *r;
+    p = head -> next;
+    head -> next = NULL;
+    while ( p != NULL)
     {
-        p = p -> prior;
-        printf("%d ->", p -> data);
+        r = p -> next;
+        p -> next = head -> next;
+        head -> next = p;
+        p = r;
     }
-    printf("NULL");
-    printf("\n"); 
+    printf("逆置双链表\n");
+    
 }
 
 
