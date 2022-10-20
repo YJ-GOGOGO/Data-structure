@@ -73,4 +73,3 @@ int main() {
     FindAndKillk(head, k, m);
     return 0;
 }
-
