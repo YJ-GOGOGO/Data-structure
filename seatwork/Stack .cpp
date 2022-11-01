@@ -31,7 +31,7 @@ void menu()
     printf("\t 2.判断栈是否为空\n");
     printf("\t 3.入栈\n");
     printf("\t 4.出栈\n");
-    printf("\t 5.去栈顶元素\n");
+    printf("\t 5.取栈顶元素\n");
     printf("\t 6.输出整个顺序栈\n");
     printStart();
 }
