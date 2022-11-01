@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #define MaxSize 5
 
+// 循环队列的实现
+
 typedef struct queue
 {
    int front;
