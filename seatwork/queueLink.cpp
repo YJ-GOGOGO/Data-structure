@@ -2,109 +2,174 @@
 #include <stdlib.h>
 #define MaxSize 100
 
+// 结点
 typedef struct Node
 {
     int data;
     struct Node *next;
 }Node, *queueLink;
 
-Node *head;
-
-// 创建头结点
-Node *CreateHead()
+// 指针
+typedef struct 
 {
-    head = (queueLink)malloc(sizeof(Node));
-    head -> next = NULL;
-    return head;
+    Node *front;
+    Node *rear;
+}LinkQueue;
+
+void printStart()                           
+{
+    int i;
+    for ( i = 0; i < 70; i++)
+    {
+        printf("*");
+    }
+    printf("\n");   
 }
 
-// 创建链队列
-Node *CreateQueueLink()
+void menu()
 {
-    Node *p, *r, *rear;
-    int temp, n;
-    r = head;
-    printf("请输入要创建链队列的长度：");
-    fflush(stdin);
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++)
-    {
-        printf("请输入第%d个节点的值", i+1 );
-        fflush(stdin);
-        scanf("%d", &temp);
-        p = (queueLink)malloc(sizeof(Node));
-        p -> data = temp;
-        r -> next = p;
-        p -> next = NULL;
-        r = p;
-    }
-    printf("创建成功!\n");
-    return head;
+    printStart();
+    printf("\t\t\t欢迎进入链栈操作界面！\n");
+    printf("\t 从键盘输入数字，完成对应的操作（1到5为有效操作，输入其他退出程序）\n  ");
+    printf("\t 1.初始化链队列\n");
+    printf("\t 2.入队\n");
+    printf("\t 3.出队\n");
+    printf("\t 4.取队头元素\n");
+    printf("\t 5.输出该队列\n");
+    printStart();
 }
 
-// 进列
-Node *Push()
+// 链队列的初始化
+LinkQueue *Initqueue()
 {
-    Node *p, *r;
-    int temp, n;
-    r = head;
-    p = (queueLink)malloc(sizeof(Node));
-    printf("请输入进列的值：");
-    fflush(stdin);
-    scanf("%d", & temp);
-    while ( r -> next != NULL )
-    {
-        r = r -> next;
-    }
-    r -> next = p;
-    p -> data = temp;
+    // 指针结点
+    LinkQueue *q;
+    // 头结点
+    Node *p;
+    q = (LinkQueue*)malloc(sizeof(Node));
+    p = (Node*)malloc(sizeof(Node));
     p -> next = NULL;
-    return head;
+    q -> front = p;
+    q -> rear = p;
+    q ->front = q->rear;
+    q -> front -> next = NULL;
+    printf("初始化成功\n");
+    return q;
 }
 
-// 出列
-Node *pop()
-{
-    Node *p, *r;
-    p = (queueLink)malloc(sizeof(Node));
-    r = head;
-    while ( r -> next  != NULL )
-    {
-        r = r -> next;
-    }
-    p = r;
-    printf("现在出列的值是：%d\n", r -> data );
-    free(p);
-    return head;
-}
-
-
-// 打印队列
-void OutQueueLink()
+// 链队列的入队
+void EnQueue(LinkQueue *Q, int x)
 {
     Node *p;
-    p = head;
-    printf("输出链队列：\n");
-    printf("head -> ");
-    while ( p -> next != NULL )
-    {
-        p = p -> next;
-        printf("%d -> ", p -> data );
-    }
-    printf("NULL\n");
+    p = (Node*)malloc(sizeof(Node));
+    p -> data = x;
+    p -> next = NULL;
+    Q->rear->next = p;
+    Q -> rear = p;
+    printf("入队成功！\n");
 }
 
+// 出队
+void Dequeue(LinkQueue *Q)
+{
+    Node *p;
+    int x;
+    p = (Node *)malloc(sizeof(Node));
+    if (Q -> front == Q -> rear)
+    {
+        printf("对不起，队列为空！\n");
+    }
+    else
+    {
+        p = Q -> front -> next;
+        x = p -> data;
+        Q -> front -> next = p -> next;
+        if ( Q -> rear == p )
+        {
+            Q -> rear = Q -> front;
+        }
+        printf("现在出对的元素是%d\n", x);
+    }
+}
+
+// 取队头元素
+void GetHeard(LinkQueue *Q)
+{
+    int x;
+    if ( Q->rear == Q->front)
+    {
+        printf("对不起，空队列！\n");
+    }
+    else
+    {
+        x = Q -> front -> next -> data;
+        printf("队列的头元素为%d\n", x);
+    }
+    
+    
+}
+
+// 输出队列
+void display(LinkQueue *Q)
+{
+    LinkQueue *k;
+    k = (LinkQueue *)malloc(sizeof(Node));
+    if ( Q->front == Q->rear )
+    {
+        printf("队列为空！\n");
+    }
+    else
+    {
+        k -> front = Q->front->next;
+        while ( k->front!=NULL)
+        {
+            printf("%d->",k->front->data);
+            k->front=k->front->next;
+        }
+        printf("NULL");
+        printf("\n");
+    }  
+}
 
 
 int main()
 {
-    head = CreateHead();
-    head = CreateQueueLink();
-    OutQueueLink();
-    head = Push();
-    OutQueueLink();
-    head = pop(); 
-    OutQueueLink();
+    int select, x, flag = 1;
+    LinkQueue *p;
+    menu();
+    while (flag == 1)
+    {
+        printf("您选择的操作是：");
+        fflush(stdin);
+        scanf("%d", &select);
+        switch (select)
+        {
+        case 1:
+            p = Initqueue();
+            break;
+        case 2:
+            printf("请输入入队的元素值：");
+            fflush(stdin);
+            scanf("%d", &x);
+            EnQueue(p, x);
+            printf("\n");
+            break;
+        case 3:
+            Dequeue(p);
+            break;
+        case 4:
+            GetHeard(p);
+            break;
+        case 5:
+            display(p);
+            break;
+        default:
+            printf("您选择退出程序！\n");
+            flag = 0;
+            break;
+        }
+    }
+    
 }
 
 
