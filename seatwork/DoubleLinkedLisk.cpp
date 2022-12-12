@@ -24,7 +24,7 @@ void printStart()
 void menu()
 {
     printStart();
-    printf("\t\t\t欢迎进入顺序表操作界面！\n");
+    printf("\t\t\t欢迎进入双链表操作界面！\n");
     printf("\t 从键盘输入数字，完成对应的操作（1到3为有效操作，输入其他退出程序）\n  ");
     printf("\t 1.创建双链表(头插法)\n");
     printf("\t 2.创建双链表(尾插法)\n");
